@@ -1,6 +1,7 @@
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
 import cardImg from '../../../assets/home/slide1.jpg'
+import MyButton from "../../../components/MyButton/MyButton";
 
 const ChefRecommends = () => {
     return (
@@ -19,7 +20,9 @@ const ChefRecommends = () => {
                         <h2 className="card-title">Caeser Salad</h2>
                         <p>Lettuce, Eggs, Parmesan Cheese, Chicken Breast Fillets.</p>
                         <div className="card-actions">
-                            <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button>
+                            <MyButton btnText="Add to cart"></MyButton>
+                            {/* <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button> */}
+
                         </div>
                     </div>
                 </div>
@@ -32,7 +35,8 @@ const ChefRecommends = () => {
                         <h2 className="card-title">Caeser Salad</h2>
                         <p>Lettuce, Eggs, Parmesan Cheese, Chicken Breast Fillets.</p>
                         <div className="card-actions">
-                            <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button>
+                        <MyButton btnText="Add to cart"></MyButton>
+                            {/* <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button> */}
                         </div>
                     </div>
                 </div>
@@ -45,7 +49,8 @@ const ChefRecommends = () => {
                         <h2 className="card-title">Caeser Salad</h2>
                         <p>Lettuce, Eggs, Parmesan Cheese, Chicken Breast Fillets.</p>
                         <div className="card-actions">
-                            <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button>
+                        <MyButton btnText="Add to cart"></MyButton>
+                            {/* <button className="btn btn-primary uppercase bg-[#E8E8E8] text-[#BB8506] border-0 border-b-2 border-[#BB8506] hover:bg-[#1F2937]">Add to cart</button> */}
                         </div>
                     </div>
                 </div>
