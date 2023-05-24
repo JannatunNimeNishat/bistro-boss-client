@@ -25,7 +25,7 @@ const Menu = () => {
     return (
         <div>
             <Helmet>
-                <title>Menu</title>
+                <title>Bistro Boss | Menu</title>
             </Helmet>
 
             <Cover img={menuImg}
@@ -44,14 +44,14 @@ const Menu = () => {
             {/* 2nd  Desserts*/}
             <MenuCategory
                 items={dessert}
-                title='desserts'
+                title='dessert'
                 img={desertImg}
             ></MenuCategory>
 
             {/* 3rd Pizza */}
             <MenuCategory
                 items={pizza}
-                title='Pizza'
+                title='pizza'
                 img={pizzaImg}
             >
             </MenuCategory>
@@ -59,14 +59,14 @@ const Menu = () => {
             {/* 4th Salads */}
             <MenuCategory
                 items={salad}
-                title='Salads'
+                title='salad'
                 img={saladImg}
             ></MenuCategory>
 
             {/* 5th Soup */}
             <MenuCategory
                 items={soup}
-                title='Soups'
+                title='soup'
                 img={soupImg}
             ></MenuCategory>
 
