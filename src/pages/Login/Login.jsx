@@ -1,9 +1,15 @@
 
 //captcha
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from '../../providers/AuthProvider';
+import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
+    const {signIn} = useContext(AuthContext);
+
+    // captcha
     //to get the value of captcha field
     const captchaRef = useRef(null)
 
@@ -31,9 +37,20 @@ const Login = () => {
         const email = form.email.value
         const password = form.password.value;
         console.log(email, password);
+        signIn(email,password)
+        .then(result =>{
+            console.log(result.user);
+        })
+        .catch(error=>{
+            console.log(error.message);
+        })
     }
 
     return (
+        <>
+        <Helmet>
+            <title>Bistro | Login</title>
+        </Helmet>
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="text-center  lg:w-1/2 lg:text-left">
@@ -78,9 +95,11 @@ const Login = () => {
                             <input disabled={disabled} className="btn btn-primary" type="submit" value="login" />
                         </div>
                     </form>
+                    <p><small>New Here? <Link to='/signup'>Create an account</Link></small></p>
                 </div>
             </div>
         </div>
+        </>
     );
 };
 
