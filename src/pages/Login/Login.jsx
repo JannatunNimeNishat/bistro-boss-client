@@ -13,7 +13,7 @@ const Login = () => {
     const location = useLocation()
     const navigate = useNavigate();
     const from = location.state?.from?.pathname || "/";
-    console.log(from);
+    // console.log(from);
     // captcha
     //to get the value of captcha field
     // const captchaRef = useRef(null)
@@ -110,9 +110,12 @@ const Login = () => {
 
 
                         </div>
+                        
+                        {/* TODO: make button disabled for captcha */}
                         <div className="form-control mt-6">
 
-                            <input disabled={disabled} className="btn btn-primary" type="submit" value="login" />
+                            <input disabled={false} className="btn btn-primary" type="submit" value="login" />
+                            {/* <input disabled={disabled} className="btn btn-primary" type="submit" value="login" /> */}
                         </div>
 
                     </form>

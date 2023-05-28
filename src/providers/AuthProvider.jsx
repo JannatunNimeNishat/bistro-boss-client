@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true)
+   
 
     const createUser = (email,password) =>{
         setLoading(true)
@@ -41,7 +42,8 @@ const AuthProvider = ({ children }) => {
         loading,
         createUser,
         signIn,
-        logOut
+        logOut,
+    
     }
     return (
         <AuthContext.Provider value={authInfo}>

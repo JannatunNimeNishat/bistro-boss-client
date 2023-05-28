@@ -18,7 +18,7 @@ const Order = () => {
     const {category} = useParams();
 
     const initialIndex = categories.indexOf(category)
-    console.log(initialIndex,category);
+    // console.log(initialIndex,category);
 
     const [tabIndex, setTabIndex] = useState(initialIndex );
     
