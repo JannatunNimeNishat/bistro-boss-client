@@ -7,10 +7,10 @@ import Swal from "sweetalert2";
 
 const SignUp = () => {
 
-    const { createUser,updateUserProfile } = useContext(AuthContext)
+    const { createUser, updateUserProfile } = useContext(AuthContext)
     const navigate = useNavigate()
     //react hook form
-    const { register, handleSubmit,reset , formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     //getting the data
     const onSubmit = data => {
@@ -23,17 +23,37 @@ const SignUp = () => {
                 //update user display name and photoUrl
                 updateUserProfile(data.name, data.photoURL)
                     .then(() => {
-                        console.log('user created successfully');
-                        reset();
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
+                        // console.log('user created successfully');
 
-                        navigate('/')
+                        // sending the user data to database
+                        const saveUser = { name: data.name, email: data.email }
+                        console.log('savedUser',saveUser);
+                        fetch('http://localhost:5000/users', {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(saveUser)
+
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.insertedId) {
+                                    reset();
+                                    Swal.fire({
+                                        position: 'top-end',
+                                        icon: 'success',
+                                        title: 'Your work has been saved',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+
+                                    navigate('/')
+                                }
+                            })
+
+
+
 
                     })
             })
@@ -66,6 +86,17 @@ const SignUp = () => {
                                 />
                                 {/* errors will return when field validation fails  */}
                                 {errors.name && <span className="text-red-500 mt-1">This name is required</span>}
+
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text" name="photoURL" placeholder="photo URL" className="input input-bordered "
+                                    {...register("photoURL", { required: true })}
+                                />
+                                {/* errors will return when field validation fails  */}
+                                {errors.photoURL && <span className="text-red-500 mt-1">This name is required</span>}
 
                             </div>
                             <div className="form-control">
