@@ -23,7 +23,7 @@ const FoodCard = ({ item}) => {
     //add the food to the cart and save it to database along with user email 
     const handleAddToCart = (item) => {
 
-        const cartItem = {menuItemId: _id,name,price,email: user.email}
+        const cartItem = {menuItemId: _id,name,image,price,email: user.email}
         if (user && user.email) {
             fetch('http://localhost:5000/carts', {
                 method: 'POST',
