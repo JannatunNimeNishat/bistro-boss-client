@@ -1,6 +1,7 @@
 import { FaBook, FaCalendar, FaHome, FaShoppingCart, FaUsers, FaUtensils, FaWallet } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Dashboard = () => {
@@ -8,7 +9,9 @@ const Dashboard = () => {
 
 
     //TODO: load data from the server to have dynamic isAdmin based on Data
-    const isAdmin = true;
+    // const isAdmin = true;
+    const [isAdmin] = useAdmin()
+    console.log('isAdmin:',isAdmin);
 
     return (
         <div className="drawer drawer-mobile ">
@@ -26,6 +29,8 @@ const Dashboard = () => {
                 <ul className="menu p-4 w-80  ">
                     {/* admin / user wise devide data */}
                     {
+                        // TODO
+                        // isAdmin.admin ?
                         isAdmin ?
                             <>
                                 <li><NavLink to='/dashboard/home' ><FaHome />Admin Home</NavLink></li>
