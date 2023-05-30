@@ -1,3 +1,4 @@
+import MyButton from "../MyButton/MyButton";
 
 
 const FoodCard = ({item}) => {
@@ -11,7 +12,8 @@ const FoodCard = ({item}) => {
                 <p>{recipe}</p>
                 
                 <div className="card-actions justify-center">
-                    <button className="btn btn-primary">Add to cart</button>
+                    {/* <button className="btn btn-primary">Add to cart</button> */}
+                    <MyButton btnText='Add to cart'></MyButton>
                 </div>
             </div>
         </div>
