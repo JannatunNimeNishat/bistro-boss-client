@@ -1,10 +1,14 @@
 //tanStack 
 import { useQuery } from '@tanstack/react-query'
-import { useContext } from 'react';
-import { AuthContext } from '../providers/AuthProvider';
+// import { useContext } from 'react';
+// import { AuthContext } from '../providers/AuthProvider';
 import useAxiosSecure from './useAxiosSecure';
+import useAuth from './useAuth';
 const useCart = () =>{
-    const {user} = useContext(AuthContext)
+    // const {user} = useContext(AuthContext)
+
+    //from useAuth custom hook 
+    const {user,loading} = useAuth();
 
     const [axiosSecure] = useAxiosSecure();
 
@@ -15,6 +19,7 @@ const useCart = () =>{
     // data fetch using axiosSecure    
     const { refetch , data: cart = [] } = useQuery({  // change the data name to cart and set a default value []
         queryKey: ['carts', user?.email],
+        enabled:!loading,
         queryFn: async ()=>{
             const response = await axiosSecure(`/carts?email=${user?.email}`)
             console.log('res from axios',response);
