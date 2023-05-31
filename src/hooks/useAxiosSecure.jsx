@@ -10,7 +10,7 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   //normal call
-//   const { logOut } = useContext(AuthContext);
+  //   const { logOut } = useContext(AuthContext);
   const { logOut } = useAuth();
 
   const axiosSecure = axios.create({
@@ -38,30 +38,30 @@ const useAxiosSecure = () => {
     );
   }, [logOut, navigate, axiosSecure]);
 
-
-    /* axiosSecure.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error.response) {
-          const { status } = error.response;
-          if (status === 401 || status === 403) {
-            // Logout user and redirect to login page
-            await logoutAndRedirect();
-          }
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    const logoutAndRedirect = async () => {
-      await logOut();
-
-     
-      navigate('/login');
-    };
-  }, [axiosSecure, logOut, navigate]); */
-
   return [axiosSecure];
+  /* axiosSecure.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      if (error.response) {
+        const { status } = error.response;
+        if (status === 401 || status === 403) {
+          // Logout user and redirect to login page
+          await logoutAndRedirect();
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  const logoutAndRedirect = async () => {
+    await logOut();
+
+   
+    navigate('/login');
+  };
+}, [axiosSecure, logOut, navigate]); */
+
+
 };
 
 export default useAxiosSecure;

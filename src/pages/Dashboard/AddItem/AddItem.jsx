@@ -1,18 +1,66 @@
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
 import { useForm } from 'react-hook-form';
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+
+//getting the api (imagebb)
+const image_hosting_token = import.meta.env.VITE_Image_Upload_token;
+
 
 const AddItem = () => {
 
+    const [axiosSecure] = useAxiosSecure()
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+
+    const img_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_token}`
+
+// form data
     const onSubmit = data => {
-        console.log(data)
+
+        //getting the local image
+        const formData = new FormData();
+        formData.append('image', data.image[0])
+
+        //sending the local image to imgbb with api key
+        fetch(img_hosting_url, {
+            method: 'POST',
+            body: formData //with out stringify
+        })
+            .then(res => res.json())
+            .then(imgResponse => {
+                //getting the imgbb uploaded img display_url
+                const imgURL = imgResponse.data.display_url
+                // destructuring the form data
+                const { name, price, category, recipe } = data;
+                //replacing the local image with imagebb uploaded imageURL 
+                //and make a new object with form data
+                //parseFloat price to avoid string problem
+                const newItem = { name, price: parseFloat(price), category, recipe, image: imgURL }
+             
+                // sending data with axiosSecure with access-token from local host
+                axiosSecure.post('/menu', newItem)
+                .then(data =>{
+                    console.log('after posting new item', data.data);
+                    if(data.data.insertedId){
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Item added successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                    }
+                })
+
+
+            })
 
     };
 
-    console.log(errors);
+
 
 
 
@@ -38,14 +86,15 @@ const AddItem = () => {
                         <label className="label">
                             <span className="label-text">Category*</span>
                         </label>
-                        <select className="select select-bordered"
+                        <select defaultValue="Pick one" className="select select-bordered"
                             {...register("category", { required: true })}
                         >
-                            <option disabled selected>Pick one</option>
+                            <option disabled >Pick one</option>
                             <option>Pizza</option>
                             <option>Soup</option>
                             <option>Salad</option>
                             <option>Dessert</option>
+                            <option>Desi</option>
                             <option>Drinks</option>
 
 
