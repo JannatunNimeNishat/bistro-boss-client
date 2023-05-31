@@ -29,6 +29,19 @@ const useAxiosSecure = () => {
     axiosSecure.interceptors.response.use(
       (response) => response,
       async (error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          await logOut();
+          navigate('/login');
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, [logOut, navigate, axiosSecure]);
+
+
+    /* axiosSecure.interceptors.response.use(
+      (response) => response,
+      async (error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 403) {
@@ -41,12 +54,12 @@ const useAxiosSecure = () => {
     );
 
     const logoutAndRedirect = async () => {
-      await logOut(); // Assuming logOut is the logout method from AuthContext
+      await logOut();
 
-      // Redirect user to login page
+     
       navigate('/login');
     };
-  }, [axiosSecure, logOut, navigate]);
+  }, [axiosSecure, logOut, navigate]); */
 
   return [axiosSecure];
 };
