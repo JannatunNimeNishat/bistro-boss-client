@@ -11,7 +11,7 @@ const Dashboard = () => {
     //TODO: load data from the server to have dynamic isAdmin based on Data
     // const isAdmin = true;
     const [isAdmin] = useAdmin()
-    console.log('isAdmin from dashboard:',isAdmin);
+    // console.log('isAdmin from dashboard:',isAdmin);
 
     return (
         <div className="drawer drawer-mobile ">
