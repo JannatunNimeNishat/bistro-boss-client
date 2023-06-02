@@ -4,27 +4,39 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useEffect } from "react";
 import useAuth from "../../../hooks/useAuth";
 
+//this css file code is copyed from https://github.com/stripe/react-stripe-js/blob/master/examples/styles/common.css
+import './CheckoutForm.css'
 
-const CheckoutForm = ({price}) => {
+
+const CheckoutForm = ({ cart, price }) => {
 
     const stripe = useStripe()
     const elements = useElements()
     const [cardError, setCardError] = useState('')
-        const {user} = useAuth()
+    const { user } = useAuth()
     //sending price to server
     const [axiosSecure] = useAxiosSecure()
     //clientSecret
-    const [clientSecret,setClientSecret]= useState('');
+    const [clientSecret, setClientSecret] = useState('');
 
-    useEffect(()=>{
-        console.log(price);
-        axiosSecure.post('/create-payment-intent', {price})
-        .then(res =>{
-            // this will give us a clientSecret. It comes from server 
-            console.log("resposne: ",res.data.clientSecret);
-            setClientSecret(res.data.clientSecret)
-        })
-    },[])
+    // 
+    const [processing, setProcessing] = useState(false)
+
+    //
+    const [transactionId, setTransactionId] = useState('')
+
+
+    useEffect(() => {
+        if (price > 0) {
+            axiosSecure.post('/create-payment-intent', { price })
+                .then(res => {
+                    // this will give us a clientSecret. It comes from server 
+                    console.log("resposne: ", res.data.clientSecret);
+                    setClientSecret(res.data.clientSecret)
+                })
+        }
+        // },[])
+    }, [price, axiosSecure])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -58,25 +70,55 @@ const CheckoutForm = ({price}) => {
         }
 
         //confirm payment
-        const {paymentIntent, error:confirmError} = await stripe.confirmCardPayment(
+        setProcessing(true)
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
             clientSecret,
             {
-              payment_method: {
-                card: card,
-                billing_details: {
-                  email: user?.email || 'unknown',
-                  name:user?.displayName || 'anonymous'
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        email: user?.email || 'unknown',
+                        name: user?.displayName || 'anonymous'
+                    },
                 },
-              },
             },
-          );
+        );
 
-          if(confirmError){
+        if (confirmError) {
             console.log(confirmError);
             //setCardError('')
 
-          }
-          console.log(paymentIntent);
+        }
+
+        console.log('payment intent', paymentIntent);
+        setProcessing(false)
+        if (paymentIntent.status === 'succeeded') {
+
+            setTransactionId(paymentIntent.id)
+            //save payment information to the server
+            const payment = {
+                email: user?.email,
+                transactionId: paymentIntent.id,
+                price,
+                data: new Date(),
+                quantity: cart.length,
+                cartItems: cart.map(item => item._id),
+                menuItems: cart.map(item => item.menuItemId),
+                status: 'service pending',
+                itemsName: cart.map(item => item.name)
+            }
+
+            //sending data using axiosSecure
+            axiosSecure.post('/payments', payment)
+                .then(res => {
+                    console.log(res.data);
+                    if (res.data.insertedId) {
+                        //display confirm sweet alert 2
+
+                    }
+                })
+
+        }
     }
 
     return (
@@ -100,12 +142,13 @@ const CheckoutForm = ({price}) => {
                     }}
                 />
                 {/* <button className="btn btn-outline btn-primary">Primary</button> */}
-                <button className="btn btn-primary btn-sm mt-4" type="submit" disabled={!stripe || !clientSecret}>
+                <button className="btn btn-primary btn-sm mt-4" type="submit" disabled={!stripe || !clientSecret || processing}>
                     Pay
                 </button>
             </form>
             {/* card error if card information is error */}
-            {cardError && <p className="text-red-600 ml-8">{cardError}</p> }
+            {cardError && <p className="text-red-600 ml-8">{cardError}</p>}
+            {transactionId && <p className="text-green-500">Transaction complete with transactionId: {transactionId}</p>}
         </>
     );
 };
