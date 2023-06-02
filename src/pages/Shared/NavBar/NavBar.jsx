@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { FaShoppingCart } from 'react-icons/fa';
 import useCart from "../../../hooks/useCart";
+import useAdmin from "../../../hooks/useAdmin";
 
 const NavBar = () => {
 
     const { user, logOut } = useContext(AuthContext)
     //getting data from custom hook and tanStack
     const [cart] = useCart()
+    
+    //checking the user is admin or not
+    const [isAdmin] = useAdmin()
 
     const handleLogout = () => {
         logOut()
@@ -21,7 +25,13 @@ const NavBar = () => {
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/menu'>Our Menu</Link></li>
         <li><Link to='/order/salad'>Order Food</Link></li>
-        <li><Link to='/secret'>Secret</Link></li>
+        {/* dynamic link if user then go to user dashboard home if admin go to admin dashboard home */}
+
+        <li>
+            <Link to={isAdmin ? '/dashboard/adminhome' : '/dashboard/userhome'} 
+        
+        >Dashboard</Link></li>
+        
         {/*  */}
         <li>
             <Link to='/dashboard/mycart'>
